@@ -68,7 +68,7 @@ Kickstart Guide:
 
   I have left several `:help X` comments throughout the init.lua
     These are hints about where to find more information about the relevant settings,
-    plugins or Neovim features used in Kickstart.
+   plugins or Neovim features used in Kickstart.
 
    NOTE: Look for lines like this
 
@@ -227,7 +227,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
+  'windwp/nvim-ts-autotag',
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -325,7 +325,38 @@ require('lazy').setup({
       -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     },
   },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
+  },
+  {
+    'sbdchd/neoformat',
+    config = function()
+      -- Configure Prettier as the formatter for specific file types
+      vim.g.neoformat_enabled_javascript = { 'prettier' }
+      vim.g.neoformat_enabled_typescript = { 'prettier' }
+      vim.g.neoformat_enabled_css = { 'prettier' }
+      vim.g.neoformat_enabled_html = { 'prettier' }
+      vim.g.neoformat_enabled_json = { 'prettier' }
+      vim.g.neoformat_enabled_markdown = { 'prettier' }
+      vim.g.neoformat_enabled_yaml = { 'prettier' }
 
+      -- Optional: Prettier configuration
+      vim.g.neoformat_prettier_cmd = 'prettier'
+    end,
+  },
+  {
+    'luckasRanarison/tailwind-tools.nvim',
+    name = 'tailwind-tools',
+    build = ':UpdateRemotePlugins',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-telescope/telescope.nvim', -- optional
+      'neovim/nvim-lspconfig', -- optional
+    },
+    opts = {}, -- your configuration
+  },
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
@@ -873,7 +904,24 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'latex' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'latex',
+        'javascript',
+        'typescript',
+        'tsx',
+        'python',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
