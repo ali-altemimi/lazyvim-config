@@ -326,11 +326,6 @@ require('lazy').setup({
     },
   },
   {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
-  },
-  {
     'sbdchd/neoformat',
     config = function()
       -- Configure Prettier as the formatter for specific file types
@@ -341,7 +336,6 @@ require('lazy').setup({
       vim.g.neoformat_enabled_json = { 'prettier' }
       vim.g.neoformat_enabled_markdown = { 'prettier' }
       vim.g.neoformat_enabled_yaml = { 'prettier' }
-
       -- Optional: Prettier configuration
       vim.g.neoformat_prettier_cmd = 'prettier'
     end,
@@ -363,6 +357,7 @@ require('lazy').setup({
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-file-browser.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
         'nvim-telescope/telescope-fzf-native.nvim',
 
@@ -417,8 +412,13 @@ require('lazy').setup({
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+            file_browser = {
+              theme = "dropdown",
+              hijack_netrw = true, -- Replace Netrw with Telescope file browser
+              hidden = true, -- Show hidden files
         },
       }
+    }
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
@@ -436,6 +436,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>fd', ':Telescope file_browser<CR>', { desc = '[F]ile [D]irectory Browser' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -628,6 +629,7 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         pyright = {},
+        zls = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
